@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(version: 2019_10_01_190919) do
   create_table "fridge_items", force: :cascade do |t|
     t.integer "user_id"
     t.integer "food_id"
-    t.datetime "date_of_purchase"
-    t.datetime "expiration"
+    t.date "date_of_purchase"
+    t.date "expiration"
     t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
