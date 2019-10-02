@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
         choices = Food.all.map {|food| food.name}
         results = prompt.select("Cool, #{self.name}, what would you like to buy?", choices)
         food = Food.all.find_by(name: results)
-        FridgeItem.create(user_id: self.id, food_id: food.id, expiration: Date.current)
+        FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "19-10-31")
 
         
         
