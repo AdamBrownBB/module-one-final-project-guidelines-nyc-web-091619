@@ -1,4 +1,4 @@
 class FridgeItem < ActiveRecord::Base 
-    belongs_to :users
-    belongs_to :foods
+    belongs_to :user
+    belongs_to :food
 end
