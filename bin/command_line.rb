@@ -17,17 +17,16 @@ require 'tty-prompt'
         prompt = TTY::Prompt.new
         choices = ["Buy food", "Check fridge", "Clean Fridge", "Exit"]
         results = prompt.select("Hi #{current_user.name}, what would you like to do?", choices)
-
+        
         if results == "Buy food"
             current_user.buy_food
         elsif results == "Check fridge"
-            check_fridge
+            current_user.check_fridge
         elsif results == "Clean fridge"
-            clean_fridge
+            current_user.clean_fridge
         else
             exit_program
         end
-
     end
 
 
