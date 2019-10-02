@@ -25,10 +25,13 @@ class User < ActiveRecord::Base
 
     def check_fridge
         my_fridge_items.each.with_index(1) do |item, i| 
-            puts "#{i}. #{item.food.name}"
-            puts "Bought on: #{item.date_of_purchase}"
-        end
 
+            item_name = item.food.name 
+            expiration_date = item.expiration
+
+            p "#{i}. #{item_name} expires on #{expiration_date}"
+            # puts "Bought on: #{item.date_of_purchase}"
+        end
     end
     
 
