@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
         choices = Food.all.map {|food| food.name}
         results = prompt.select("Cool, #{self.name}, what would you like to buy?", choices)
         food = Food.all.find_by(name: results)
+        
         newest_item = FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "2019-10-31")
 
         change_exp_prompt = TTY::Prompt.new
@@ -43,6 +44,9 @@ class User < ActiveRecord::Base
     end
 
     def check_fridge
+        # check if the fridge contains items,
+        # if yes, do the following
+        # if not, puts 'no item xxxx', back to home menu
         prompt = TTY::Prompt.new
         choices = my_fridge_items.map { |item|   item.food.name + ": expires on #{item.expiration}" }.push("Nope")
         result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
