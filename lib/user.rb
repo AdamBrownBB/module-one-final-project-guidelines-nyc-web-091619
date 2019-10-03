@@ -36,6 +36,7 @@ class User < ActiveRecord::Base
                 item.food.name == my_food_name
             end
             FridgeItem.delete(item_to_delete.id)
+            show_main_menu(self)
         end
     end
 
@@ -46,6 +47,7 @@ class User < ActiveRecord::Base
         if result  == "Y" || "y"
             #find all of this users items
             FridgeItem.delete(my_fridge_items)
+            show_main_menu(self)
         else
             show_main_menu(self)
         end
