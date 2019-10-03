@@ -48,7 +48,8 @@ class User < ActiveRecord::Base
         result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
         
         if result == "Nope"
-            
+            puts "Ok, your fridge remains unchanged"
+            sleep 3
             show_main_menu(self)
             
         else
@@ -57,8 +58,7 @@ class User < ActiveRecord::Base
                 item.food.name == my_food_name
             end
             FridgeItem.delete(item_to_delete.id)
-            #add message
-            #add pause
+            `afplay ./lib/zapsplat_foley_rubbish_push_down_in_small_bin_27372.mp3`
             show_main_menu(self)
         end
     end
@@ -70,11 +70,14 @@ class User < ActiveRecord::Base
         if result
             #find all of this users items
             FridgeItem.delete(my_fridge_items)
-            #let's add a message here
+            `afplay ./lib/zapsplat_foley_rubbish_push_down_in_small_bin_27372.mp3`
+            puts "Ok, your fridge is empty!"
+            sleep 3
             show_main_menu(self)
             
-        elsif
-            #let's add a message here
+        else
+            puts "Ok, all of your stuff is still in the fridge."
+            sleep 3
             show_main_menu(self)
         end
     end
