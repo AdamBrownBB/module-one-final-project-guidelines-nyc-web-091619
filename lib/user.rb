@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
         choices = Food.all.map {|food| food.name}
         results = prompt.select("Cool, #{self.name}, what would you like to buy?", choices)
         food = Food.all.find_by(name: results)
-        
+
         newest_item = FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "2019-10-31")
 
         change_exp_prompt = TTY::Prompt.new
@@ -47,25 +47,31 @@ class User < ActiveRecord::Base
         # check if the fridge contains items,
         # if yes, do the following
         # if not, puts 'no item xxxx', back to home menu
-        prompt = TTY::Prompt.new
-        choices = my_fridge_items.map { |item|   item.food.name + ": expires on #{item.expiration}" }.push("Nope")
-        result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
-        
-        if result == "Nope"
-            puts "Ok, your fridge remains unchanged"
+        if my_fridge_items.empty?
+            puts "Sorry #{self.name}, you have no food left :("
             sleep 3
             show_main_menu(self)
-            
         else
-            my_food_name = result.split(":").first
-            item_to_delete = my_fridge_items.find do |item|
-            item.food.name == my_food_name
+            prompt = TTY::Prompt.new
+            choices = my_fridge_items.map { |item|   item.food.name + ": expires on #{item.expiration}" }.push("Nope")
+            result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
+            
+            if result == "Nope"
+                puts "Ok, your fridge remains unchanged"
+                sleep 3
+                show_main_menu(self)
+                
+            else
+                my_food_name = result.split(":").first
+                item_to_delete = my_fridge_items.find do |item|
+                item.food.name == my_food_name
+                end
+                FridgeItem.delete(item_to_delete.id)
+                `afplay ./lib/zapsplat_foley_rubbish_push_down_in_small_bin_27372.mp3`
+                show_main_menu(self)
             end
-            FridgeItem.delete(item_to_delete.id)
-            `afplay ./lib/zapsplat_foley_rubbish_push_down_in_small_bin_27372.mp3`
-            show_main_menu(self)
         end
-    end
+    end #end of check_fridge method
 
     def clean_fridge
         prompt = TTY::Prompt.new
