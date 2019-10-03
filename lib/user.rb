@@ -44,9 +44,6 @@ class User < ActiveRecord::Base
     end
 
     def check_fridge
-        # check if the fridge contains items,
-        # if yes, do the following
-        # if not, puts 'no item xxxx', back to home menu
         if my_fridge_items.empty?
             puts "Sorry #{self.name}, you have no food left :("
             sleep 3
@@ -72,6 +69,20 @@ class User < ActiveRecord::Base
             end
         end
     end #end of check_fridge method
+
+    def check_food_quantity
+        #pulls all of my_fridge_items.food.name 
+        #use unique method to remove dupes
+        #present results as array of unique strings, pass to prompt.select
+        #they choose one, we look up items w/ same name (find by name).count
+        #print return value 
+         prompt = TTY::Prompt.new
+        my_unique_items = (my_fridge_items.map { |item| item.food.name}).uniq
+        item_selection = prompt.select("What would you like to check?", my_unique_items)
+        number = (my_fridge_items.select { |item| item.food.name == item_selection }).count 
+        puts "You have #{number} #{item_selection}."
+
+    end
 
     def clean_fridge
         prompt = TTY::Prompt.new
