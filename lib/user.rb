@@ -15,10 +15,11 @@ class User < ActiveRecord::Base
 
         change_exp_prompt = TTY::Prompt.new
         result = change_exp_prompt.yes?("This expires on #{newest_item.expiration}. Would you like to change it?")
-        
+
         if result
             update_expiration_date(newest_item)
-            binding.pry
+            puts "Ok, the expiration date is now #{newest_item.expiration}."
+            sleep 2
             show_main_menu(self)
         elsif
             #let's add a message here
@@ -32,8 +33,7 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         # prompt ask for new date
         new_exp_date = prompt.ask("What is the correct expiration date?")
-        binding.pry
-
+        newest_item.update(expiration: new_exp_date)
     end
 
     def my_fridge_items   #helper method to find current user's fridge items
@@ -48,8 +48,9 @@ class User < ActiveRecord::Base
         result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
         
         if result == "Nope"
+            
             show_main_menu(self)
-            #add message
+            
         else
             my_food_name = result.split(":").first
             item_to_delete = my_fridge_items.find do |item|
@@ -66,13 +67,13 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         result = prompt.yes?("Do you want to clean all of your stuff out of the fridge?")
 
-        if result.downcase  == "y"
+        if result
             #find all of this users items
             FridgeItem.delete(my_fridge_items)
             #let's add a message here
             show_main_menu(self)
             
-        elsif result.downcase == "n"
+        elsif
             #let's add a message here
             show_main_menu(self)
         end

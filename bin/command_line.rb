@@ -23,14 +23,12 @@ require 'tty-prompt'
             current_user.clean_fridge
         elsif results == "Move out"
             current_user.delete_user_account
-        else
+        elsif results == "Exit"
             exit 
         end
     end
 
-    def exit
-        prompt = TTY::Prompt.new(interrupt: :signal)
-    end
+
 
 
 
