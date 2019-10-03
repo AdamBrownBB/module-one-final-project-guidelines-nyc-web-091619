@@ -11,9 +11,9 @@ class User < ActiveRecord::Base
         choices = Food.all.map {|food| food.name}
         results = prompt.select("Cool, #{self.name}, what would you like to buy?", choices)
         food = Food.all.find_by(name: results)
-        FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "19-10-31")
-        # show_main_menu(self)
-        binding.pry
+        FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "2019-10-31")
+        show_main_menu(self)
+       
         
     end
 
@@ -24,13 +24,18 @@ class User < ActiveRecord::Base
     end
 
     def check_fridge
-        my_fridge_items.each.with_index(1) do |item, i| 
-
-            item_name = item.food.name 
-            expiration_date = item.expiration
-
-            p "#{i}. #{item_name} expires on #{expiration_date}"
-            # puts "Bought on: #{item.date_of_purchase}"
+        prompt = TTY::Prompt.new
+        choices = my_fridge_items.map { |item|   item.food.name + ": expires on #{item.expiration}" }.push("Nope")
+        result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
+        
+        if result == "Nope"
+            show_main_menu(self)
+        else
+            my_food_name = result.split(":").first
+            item_to_delete = my_fridge_items.find do |item|
+                item.food.name == my_food_name
+            end
+            FridgeItem.delete(item_to_delete.id)
         end
     end
     
