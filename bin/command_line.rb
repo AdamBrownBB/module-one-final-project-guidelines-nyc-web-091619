@@ -15,7 +15,7 @@ require 'tty-prompt'
 
     def show_main_menu(current_user)
         prompt = TTY::Prompt.new
-        choices = ["Buy food", "Check fridge", "Clean Fridge", "Exit"]
+        choices = ["Buy food", "Check fridge", "Clean fridge", "Exit"]
         results = prompt.select("Hi #{current_user.name}, what would you like to do?", choices)
         
         if results == "Buy food"
@@ -25,7 +25,7 @@ require 'tty-prompt'
         elsif results == "Clean fridge"
             current_user.clean_fridge
         else
-            exit_program
+            # exit_program
         end
     end
 

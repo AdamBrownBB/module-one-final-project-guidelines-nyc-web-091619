@@ -38,6 +38,21 @@ class User < ActiveRecord::Base
             FridgeItem.delete(item_to_delete.id)
         end
     end
+
+    def clean_fridge
+        prompt = TTY::Prompt.new
+        result = prompt.yes?("Do you want to clean all of your stuff out of the fridge?")
+
+        if result  == "Y" || "y"
+            #find all of this users items
+            FridgeItem.delete(my_fridge_items)
+        else
+            show_main_menu(self)
+        end
+        # binding.pry
+    end
+
+
     
 
 end #end of class
