@@ -55,7 +55,7 @@ class User < ActiveRecord::Base
         else
             my_food_name = result.split(":").first
             item_to_delete = my_fridge_items.find do |item|
-                item.food.name == my_food_name
+            item.food.name == my_food_name
             end
             FridgeItem.delete(item_to_delete.id)
             `afplay ./lib/zapsplat_foley_rubbish_push_down_in_small_bin_27372.mp3`
