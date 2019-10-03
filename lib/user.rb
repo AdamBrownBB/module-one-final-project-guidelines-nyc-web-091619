@@ -11,10 +11,29 @@ class User < ActiveRecord::Base
         choices = Food.all.map {|food| food.name}
         results = prompt.select("Cool, #{self.name}, what would you like to buy?", choices)
         food = Food.all.find_by(name: results)
-        FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "2019-10-31")
-        show_main_menu(self)
-       
+        newest_item = FridgeItem.create(user_id: self.id, food_id: food.id, expiration: "2019-10-31")
+
+        change_exp_prompt = TTY::Prompt.new
+        result = change_exp_prompt.yes?("This expires on #{newest_item.expiration}. Would you like to change it?")
         
+        if result
+            update_expiration_date(newest_item)
+            binding.pry
+            show_main_menu(self)
+        elsif
+            #let's add a message here
+            show_main_menu(self)
+        end
+        show_main_menu(self)
+     
+    end
+
+    def update_expiration_date(newest_item)
+        prompt = TTY::Prompt.new
+        # prompt ask for new date
+        new_exp_date = prompt.ask("What is the correct expiration date?")
+        binding.pry
+
     end
 
     def my_fridge_items   #helper method to find current user's fridge items
@@ -30,12 +49,15 @@ class User < ActiveRecord::Base
         
         if result == "Nope"
             show_main_menu(self)
+            #add message
         else
             my_food_name = result.split(":").first
             item_to_delete = my_fridge_items.find do |item|
                 item.food.name == my_food_name
             end
             FridgeItem.delete(item_to_delete.id)
+            #add message
+            #add pause
             show_main_menu(self)
         end
     end
@@ -44,14 +66,23 @@ class User < ActiveRecord::Base
         prompt = TTY::Prompt.new
         result = prompt.yes?("Do you want to clean all of your stuff out of the fridge?")
 
-        if result  == "Y" || "y"
+        if result.downcase  == "y"
             #find all of this users items
             FridgeItem.delete(my_fridge_items)
+            #let's add a message here
             show_main_menu(self)
-        else
+            
+        elsif result.downcase == "n"
+            #let's add a message here
             show_main_menu(self)
         end
-        # binding.pry
+    end
+
+    def delete_user_account
+        puts "Ok, bye #{self.name}!"
+        FridgeItem.delete(my_fridge_items)
+        User.delete(self.id)
+        greeting
     end
 
 

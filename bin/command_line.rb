@@ -1,6 +1,5 @@
 require 'tty-prompt'
-
-        
+  
     current_user = nil 
 
     def greeting
@@ -11,11 +10,9 @@ require 'tty-prompt'
         show_main_menu (current_user)
     end
 
-
-
     def show_main_menu(current_user)
         prompt = TTY::Prompt.new
-        choices = ["Buy food", "Check fridge", "Clean fridge", "Exit"]
+        choices = ["Buy food", "Check fridge", "Clean fridge", "Move out", "Exit"]
         results = prompt.select("Hi #{current_user.name}, what would you like to do?", choices)
         
         if results == "Buy food"
@@ -24,9 +21,15 @@ require 'tty-prompt'
             current_user.check_fridge
         elsif results == "Clean fridge"
             current_user.clean_fridge
+        elsif results == "Move out"
+            current_user.delete_user_account
         else
-            # exit_program
+            exit 
         end
+    end
+
+    def exit
+        prompt = TTY::Prompt.new(interrupt: :signal)
     end
 
 
@@ -37,4 +40,3 @@ require 'tty-prompt'
 
 
 
-# binding.pry 
