@@ -6,7 +6,7 @@ welcome_screen
 greeting
 
 
-binding.pry
+# binding.pry
 
 
 puts "HELLO WORLD"
