@@ -112,10 +112,16 @@ class User < ActiveRecord::Base
 
     def delete_user_account
         puts "Ok, bye #{self.name}!"
+        # binding.pry
+        puts bye_felicia
         FridgeItem.delete(my_fridge_items)
         User.delete(self.id)
+        
         greeting
     end
+
+    
+
 
 
     
