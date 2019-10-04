@@ -52,6 +52,9 @@ class User < ActiveRecord::Base
             prompt = TTY::Prompt.new
             choices = my_fridge_items.map { |item|   item.food.name + ": expires on #{item.expiration}" }.push("Nope")
             result = prompt.select("Cool, #{self.name}, do you want to get rid of any of these things?", choices)
+
+            # result = "milk: expires on: xxxxx"
+            result.split(:) = ["milk", " expires on", " xxxxx"]
             
             if result == "Nope"
                 puts "Ok, your fridge remains unchanged"
